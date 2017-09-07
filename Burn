@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# This will burn a multi-session CD
+
+# Unmount the CD so that you can get the Table of contents
+umount /run/media/a/CDROM
+TOC=`cdrecord dev=/dev/sr0 -msinfo`
+
+# Burns CD so that it starts on the correct table of contents
+mkisofs -r -R -J -l -L -C $TOC -M /dev/sr0 $1 | cdrecord -v -eject speed=4 dev=/dev/sr0 -multi -
